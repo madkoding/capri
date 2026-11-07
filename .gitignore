@@ -1,0 +1,15 @@
+data/
+.capri/
+telemetry/
+models/
+.env
+skills/generated/
+/capri
+bin/
+.env.*
+internal/backend/embedded/runtime-*
+capri-vulkan
+*.gguf
+*.log
+.claude/settings.local.json
+.DS_Store

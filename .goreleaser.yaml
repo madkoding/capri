@@ -1,0 +1,67 @@
+version: 2
+
+project_name: capri
+
+builds:
+  - id: capri
+    main: ./cmd/capri
+    binary: capri
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+
+  # versión con llama.cpp Vulkan incluido (binario único; sin descarga del runtime)
+  - id: capri-vulkan
+    main: ./cmd/capri
+    binary: capri
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    tags:
+      - vulkan
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+    hooks:
+      pre: scripts/embed-vulkan.sh {{ .Os }} {{ .Arch }}
+
+archives:
+  - ids: [capri]
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+
+  - id: capri-vulkan
+    ids: [capri-vulkan]
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: >-
+      {{ .ProjectName }}-vulkan_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+
+checksums:
+  name_template: checksums.txt
+
+changelog:
+  use: github
+  sort: asc
