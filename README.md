@@ -1,7 +1,50 @@
-# Capri
+<div align="center">
 
-Agente local con **segundo cerebro**: un LLM en llama.cpp (GPU) + RAG propio (SQLite: FTS5 + vectores nomic-embed) +
-una TUI cyberpunk a pantalla completa. Sin webui.
+# ◈ Capri
+
+**Un agente local con segundo cerebro.**
+LLM en llama.cpp (GPU) · memoria RAG propia en SQLite · TUI cyberpunk a pantalla completa.
+Todo corre en tu máquina: sin nube, sin Docker, sin webui.
+
+<img src="docs/screenshots/arranque.png" alt="Arranque de Capri" width="760">
+
+</div>
+
+## ✨ Qué hace
+
+- 🧠 **Segundo cerebro**: recuerda lo que le cuentas (búsqueda híbrida BM25 + vectores) y lo usa en turnos futuros.
+- 🛠️ **Agente con herramientas**: bucle ReAct que decide un paso a la vez viendo el resultado real, con sandbox, autorizaciones y deshacer (`/undo`).
+- 🌐 **Aprende de internet**: si no sabe algo, busca, lee y guarda la respuesta en su memoria.
+- 🗜️ **Contexto infinito**: compacta la sesión automáticamente y guarda el resumen en el RAG.
+- 🖥️ **TUI propia**: dock de instrumentos (GPU, VRAM, contexto, pipeline neuronal), scroll, animaciones.
+- 🔌 **Backends**: llama.cpp nativo (CUDA/ROCm/Metal/Vulkan/CPU) o cualquier servidor OpenAI-compatible (Ollama, vLLM, LM Studio).
+- 🪟 **Linux, macOS y Windows** (`amd64`/`arm64`), un único binario estático.
+
+## 📸 Cómo se ve
+
+### En reposo
+Dock con **Sistema** (modelos, temperatura de GPU, VRAM, contexto), **Enlace neuronal** (pipeline RECALL→ROUTE→THINK→ACT→MEMORY) y **Memoria** (recuerdos activados con su similitud).
+
+<img src="docs/screenshots/reposo.png" alt="Capri en reposo" width="900">
+
+### Trabajando con herramientas
+Cada paso del bucle ReAct se muestra en vivo: skill elegida, llamada a la herramienta y resultado real. El pipeline se enciende nodo a nodo.
+
+<img src="docs/screenshots/agente.png" alt="Capri ejecutando herramientas" width="900">
+
+### Memoria
+Le cuentas algo una vez y lo recuerda después; el panel de la derecha muestra qué recuerdo se activó y con qué similitud.
+
+<img src="docs/screenshots/memoria.png" alt="Capri recordando datos" width="900">
+
+### Comandos
+`/help` lista todo: `/undo`, `/mem`, `/search`, `/model` (descarga GGUF desde Hugging Face), `/compact`, `/export`…
+
+<img src="docs/screenshots/ayuda.png" alt="Ayuda de comandos" width="900">
+
+> Las capturas son de la TUI real (Tesla P4 + Vulkan, modelo de 9B cuantizado). Se generan con `scripts/screenshots.py`.
+
+## 🚀 Inicio rápido
 
 ```bash
 make build              # compila ./capri (binario estático, sin CGO)
